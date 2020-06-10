@@ -25,3 +25,8 @@ Authors:
 Project Manager: Kacper Beisert  
 Chief Architect: Cameron McCosh  
 Developers: Darius Darulis & Pearse Graffin
+
+## License
+
+This is an open source project under the GNU General Public License v3.0.  
+The contents of the license are available in the LICENSE file.
