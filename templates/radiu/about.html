@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+{% extends 'radiu/base.html' %}
+{% load staticfiles %}
+
+<!-- Title -->
+{% block title_block %}
+    About
+{% endblock %}
+
+<!-- Page (CSS/Scripts) -->
+{% block head_block %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/about.css" %}"></link>
+{% endblock %}
+
+<!-- Body -->
+{% block body_block %}
+    <div class="row row-12 justify-content-center">
+       <div class="col-xs-3">
+           <h2>Our goal:</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-md-4">
+             <img src="{% static "img/listen1.jpeg" %}" class="img-fluid rounded" alt="listener">
+        </div>
+        <div class="col-xs-12 col-md-4">
+            <img src="{% static "img/listen2.jpeg" %}" class="img-fluid rounded" alt="listener">
+        </div>
+        <div class="col-xs-12 col-md-4">
+            <img src="{% static "img/listen3.jpeg" %}" class="img-fluid rounded" alt="listener">
+        </div>
+    </div>
+    <div class="row row-12 justify-content-center">
+        <p>At Radi-U, we promote interaction between us and you, the listener, unlike any other radio station!</br>
+        We strive to give the best possible radio experience for our listeners, thus we take your feedback to heart and let your voices be heard.
+        </br>
+        With our unique platform, we will play music voted on by you, with a chart designed by the votes of our listeners!</p>
+    </div>
+
+<hr class="style13">
+
+   <div class="row row-12 justify-content-center">
+       <div class="col-xs-3">
+           <h2>The team:</h2>
+       </div>
+   </div>
+   <div class="row">
+        <div class="col-xs-12 col-md-4">
+             <img src="{% static "img/team1.jpg" %}" class="img-fluid rounded" alt="team">
+        </div>
+        <div class="col-xs-12 col-md-4">
+            <img src="{% static "img/team2.jpg" %}" class="img-fluid rounded" alt="team">
+        </div>
+        <div class="col-xs-12 col-md-4">
+            <img src="{% static "img/team3.jpg" %}" class="img-fluid rounded" alt="team">
+        </div>
+    </div>
+    <div class="row row-12 justify-content-center">
+        <p>As a group of computing science students, we have come together and combined what we have learnt at university and from previous experience to create Radi-U, the radio for you!</p>
+    </div>
+
+<hr class="style13">
+
+    <div class="row row-12 justify-content-center">
+       <div class="col-xs-3">
+           <h2>How to use Radi-U:</h2>
+       </div>
+   </div>
+   <div class="row">
+        <div class="col-xs-12 col-md-4">
+            <div class="card">
+                <img class="card-img-top" src="{% static "img/register.jpeg" %}" alt="register">
+                <div class="card-body">
+                   <h5 class="card-title">#1 Register:</h5>
+                    <p class="card-text">Create an account with us in under a minute and choose your favourite song!</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-4">
+            <div class="card">
+                <img class="card-img-top" src="{% static "img/radio2.jpeg" %}" alt="Statistics">
+                <div class="card-body">
+                   <h5 class="card-title">#2 Find your music:</h5>
+                    <p class="card-text">Our homepage shows the top songs of the week, but feel free to search for your own music and give it a like! Once you have liked a few songs, our algorithms will suggest songs you might also enjoy.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-4">
+            <div class="card">
+                <img class="card-img-top" src="{% static "img/radio1.jpeg" %}" alt="Listen!">
+                <div class="card-body">
+                   <h5 class="card-title">#3 Listen!</h5>
+                    <p class="card-text">Listen to your favourite music and discover more!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

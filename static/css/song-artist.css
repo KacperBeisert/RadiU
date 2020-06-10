@@ -1,0 +1,41 @@
+button#fav-button {
+    background-size: 30px 30px;
+	height: 30px;  
+    width: 30px;
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
+	border: none;
+	color: white;
+	background-color: white;
+	outline: none;
+}
+
+h3 {
+    padding-top: 2%;  
+}
+
+#buttons-block {
+    padding-bottom: 1%;
+}
+
+strong {
+    vertical-align: middle;
+}
+
+.btn-danger {
+    padding: 3px .75rem;
+}
+
+.col-md-2 {
+    width: auto;
+}
+
+.buttons {
+    text-align: center
+}
+
+#delete-button {
+    padding-bottom: 1%; 
+}

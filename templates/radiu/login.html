@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+{% extends 'radiu/base.html' %}
+{% load staticfiles %}
+
+<!-- Title -->
+{% block title_block %}
+    Login
+{% endblock %}
+
+<!-- Page (CSS/Scripts) -->
+{% block head_block %}
+	<link rel="stylesheet" type="text/css" href="{% static "css/login.css" %}"></link>
+{% endblock %}
+
+<!-- Body -->
+{% block body_block %}
+	<div class="row justify-content-xs-center justify-content-sm-center" id="input-block">
+		<div class="col col-xs-auto col-sm-6 col-md-6 col-lg-5 col-xl-3 ">
+			<h3>Login to Radi-U!</h3>
+			<form id="login_form" method="post" action="{% url 'login' %}" novalidate>
+				{% csrf_token %}
+				<div class="form-group">
+				    <label for="formGroupExampleInput">Enter username:</label>
+					<input type="text" class="form-control" id="loginUsernameInput" name="username" placeholder="Username">
+				</div>
+				<div class="form-group">
+					<label for="formGroupExampleInput2">Enter password:</label>
+					<input type="password" class="form-control" id="loginPasswordInput" name="password" placeholder="Password">
+					{% if error %}
+					    <div class="is-invalid">
+					        {{ error }}
+					    </div>
+					{% endif %}
+				</div>
+				<button type="submit" class="btn btn-primary">Login</button>
+			</form>
+		</div>
+	</div>
+{% endblock %}

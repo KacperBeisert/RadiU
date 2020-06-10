@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Radi-U - {% block title_block %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Page (CSS/Scripts) -->
+    <link rel="stylesheet" type="text/css" href="{% static "css/radiu.css" %}"></link>
+    {% block head_block %}
+	{% endblock %}
+</head>
+
+<body>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-md navbar-light" style="background-color: deepskyblue;">
+    <a class="navbar-brand" href="{% url 'home' %}">Radi-U</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+	<!-- Navbar contents -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+        {% if request.path != "/radiu/register/" %}
+        <!-- Search box -->
+        <li class="nav-item dropdown">
+			<form class="navbar-form">
+			<input class="search-query form-control mr-sm-2" type="text" size="50" name="suggestion" value="" id="suggestion" placeholder="Search" aria-label="Search">
+			</form>
+			<input type="hidden" class="dropdown-toggle toggle-helper" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<!-- Dropdown results -->
+			<div class="dropdown-menu form-control mr-sm-2" aria-labelledby="navbarDropdownMenuLink" id="search-results"></div>
+		</li>
+        {% endif %}
+        <!-- Navbar buttons -->
+        {% if request.path != "/radiu/home/" and request.path != "/" %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'home' %}">Home</a>
+            </li>
+        {% endif %}
+        {% if user.is_authenticated %}
+        {% with request.path|slice:"7:16" as path %}
+      	    {% if path != "myprofile" %}
+      		    <li class="nav-item">
+			        <a class="nav-link" href="{% url 'myprofile' user.username|slugify %}">My Profile</a>
+			    </li>
+			{% else %}
+			    {% if user.is_staff %}
+		        	<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						  Submit
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+						  <a class="dropdown-item" href="{% url 'add_artist' %}">Artist</a>
+						  <a class="dropdown-item" href="{% url 'submit_song' %}">Song</a>
+						</div>
+					</li>
+			    {% endif %}
+			    <li class="nav-item">
+			        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+			    </li>
+      	    {% endif %}
+        {% endwith %}
+        {% else %}
+            {% if request.path != "/radiu/login/" %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+            {% endif %}
+            {% if request.path != "/radiu/register/" %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </li>
+            {% endif %}
+        {% endif %}
+        {% if request.path != "/radiu/about/" %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'about' %}">About</a>
+            </li>
+        {% endif %}
+        </ul>
+    </div>
+</nav>
+
+<!-- Body -->
+<div class="page-container">
+	{% block body_block %}
+	{% endblock %}
+<!-- All scripts -->
+</div>
+<div>
+<!-- JQuery/Popper/Bootstrap -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<!-- AJAX -->
+<script src="{% static "js/radiu-ajax.js" %}"></script>
+<script src="{% static "js/favourite-ajax.js" %}"></script>
+<script src="{% static "js/youtube-player.js" %}"></script>
+{% block script_block %}
+{% endblock %}
+</div>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+{% extends 'radiu/base.html' %}
+{% load staticfiles %}
+
+<!-- Title -->
+{% block title_block %}
+    Register
+{% endblock %}
+
+<!-- Page (CSS/Scripts) -->
+{% block head_block %}
+	<link rel="stylesheet" type="text/css" href="{% static "css/register.css" %}"></link>
+{% endblock %}
+
+<!-- Body -->
+{% block body_block %}
+    {% if registered %}
+        <div id="success-message">
+        	<strong>Thank you for registering! <a href="{% url 'login' %}">Log in?</a></strong><br />
+        </div>
+    {% else %}
+        <div class="row justify-content-xs-center justify-content-sm-center" id="input-block">
+    	    <div class="col col-xs-auto col-sm-6 col-md-6 col-lg-5 col-xl-3 ">
+    	        {% if user.is_authenticated %}
+                    <strong>Already logged in as {{ user.username }}! Logout before registering a new profile.</strong>
+    	        {% else %}
+    		        <h3>Register to Radi-U!</h3>
+
+    		        <!-- Register Form -->
+    		        <form id="user_form" class="needs-validation" method="post" action="{% url 'register' %}" enctype="multipart/form-data" novalidate>
+    			        {% csrf_token %}
+    			        <div class="form-group">
+    				        <label for="id_username">Enter username:</label>
+    				        <input type="text" class="form-control" id="id_username" name="username" maxlength="50" placeholder="Username" required="">
+    			        </div>
+    			        <div class="form-group">
+    				        <label for="id_email">Enter e-mail address:</label>
+    				        <input type="email" class="form-control" id="id_email" name="email" maxlength="100" placeholder="E-mail address" required="">
+    			        </div>
+    			        <div class="form-group">
+    				        <label for="id_password">Enter password:</label>
+    				        <input type="password" class="form-control" id="id_password" name="password" maxlength="20" placeholder="Password" required="">
+    			        </div>
+    			        <div class="form-group">
+    			        	<label for="id_favourite_song">Enter your favourite song:</label>
+    			        	<input class="search-query form-control mr-sm-2" type="text" size="50" name="suggestion" value="" id="suggestion" placeholder="Search" aria-label="Search" autocomplete="off">
+    			        	<input type="hidden" id="id_hidden_favourite_song" name="favourite_song" value="" maxlength="50">
+    			        	<div class="card"></div>
+    			        </div>
+    			        <div class="form-group">
+    			            <label for="id_picture">Upload your profile picture:</label>
+    				        <input type="file" class="form-control" id="id_picture" name="picture"><input type="hidden" name="slug" id="id_slug">
+                            {% if profile_error %}
+    				            <div class="is-invalid">
+    					            {{ profile_error }}
+    				            </div>
+    				        {% endif %}
+    				    </div>
+    			        <button type="submit" name="submit" class="btn btn-primary">Register</button>
+    		        </form>
+    	        {% endif %}
+    	    </div>
+        </div>
+
+        <!-- JavaScript for disabling form submissions if there are invalid fields -->
+        <script>
+            (function() {
+                'use strict';
+                window.addEventListener('load', function() {
+                    // Fetch all the forms to which we want to apply custom Bootstrap validation styles
+                    var forms = document.getElementsByClassName('needs-validation');
+                    // Loop over them and prevent submission
+                    var validation = Array.prototype.filter.call(forms, function(form) {
+                        form.addEventListener('submit', function(event) {
+                            if (form.checkValidity() === false) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+                            form.classList.add('was-validated');
+                        }, false);
+                    });
+                }, false);
+            })();
+        </script>
+    {% endif %}
+{% endblock %}
+
+{% block script_block %}
+    <script src="{% static "js/register-ajax.js" %}"></script>
+{% endblock %}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+{% extends 'radiu/base.html' %}
+{% load staticfiles %}
+
+<!-- Title -->
+{% block title_block %}
+    Add Artist
+{% endblock %}
+
+<!-- Page (CSS/Scripts) -->
+{% block head_block %}
+	<link rel="stylesheet" type="text/css" href="{% static "css/add_artist.css" %}"></link>
+{% endblock %}
+
+<!-- Body -->
+{% block body_block %}
+    {% if added %}
+        <div id="success-message">
+       	    <strong>New artist has been added! <a href="{% url 'submit_song' %}">Submit a song?</a></strong><br />
+        </div>
+    {% else %}
+        <div class="row justify-content-xs-center justify-content-sm-center" id="input-block">
+    		<div class="col col-xs-auto col-sm-6 col-md-6 col-lg-5 col-xl-3 ">
+    			<h3>Add an artist!</h3>
+    			<form id="artist_form" method="post" action="{% url 'add_artist' %}" novalidate>
+    				{% csrf_token %}
+    				<div class="form-group">
+    				    <label for="id_name">Name:</label>
+    					<input type="text" class="form-control" id="id_name" name="name" maxlength="100" placeholder="Name">
+    				</div>
+    				<div class="form-group">
+    					<label for="id_description">Description (Optional):</label>
+    					<input type="text" class="form-control" id="id_description" name="description" placeholder="Description">
+    					<input type="hidden" name="slug" id="id_slug">
+    					{% if errors %}
+    					    <div class="is-invalid">
+    					        {{ errors }}
+    					    </div>
+    					{% endif %}
+    				</div>
+    				<button type="submit" class="btn btn-primary">Add</button>
+    			</form>
+    		</div>
+	    </div>
+    {% endif %}
+{% endblock %}

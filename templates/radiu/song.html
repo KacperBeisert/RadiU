@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+{% extends 'radiu/base.html' %}
+{% load staticfiles %}
+
+<!-- Title -->
+{% block title_block %}
+    {{ song.title }}
+{% endblock %}
+
+<!-- Page (CSS/Scripts) -->
+{% block head_block %}
+	<link rel="stylesheet" type="text/css" href="{% static "css/song-artist.css" %}"></link>
+{% endblock %}
+
+<!-- Body -->
+{% block body_block %}
+   {% if deleted %}
+        <div id="success-message">
+        	<strong>{{ message }}</strong><br />
+        </div>
+    {% else %}
+    {% if song %}
+        <div class="row justify-content-center">
+            <h3><a href="{% url 'artist' song.artist.slug%}">{{ song.artist }}</a> - {{ song.title }} - {{ song.genre }}</h3>
+        </div>
+
+        <!-- Player -->
+        <div class="row justify-content-center">
+        	<div id="player" video_id="{{video_id}}"></div>
+        </div>
+
+        <!-- Favourite and like buttons -->
+        <div class="row row-12 justify-content-center" id="buttons-block">
+          {% if user.is_authenticated %}
+          <div class="col-xs-3 col-md-1 buttons">
+               <strong>Fave: </strong><button id="fav-button" faved="{% if is_favourite %}yes{% else %}no{% endif %}" data-songid="{{ song.id }}"  type="button" fav-img="{% static "img/fav.png" %}" unfav-img="{% static "img/unfav.png" %}" style=""></button>
+          </div>
+          <div class="col-3 col-md-1 buttons">
+              <strong>Faves: {{ faves }}</strong>
+          </div>
+          <div class="col-3 col-md-1 buttons">
+              <strong>Likes: {{ likes }}</strong>
+          </div>
+          <div class="col-3 col-md-1 buttons">
+               <strong>Like: </strong><button class="like-button" liked="{% if song.id in liked %}yes{% else %}no{% endif %}" data-songid="{{ song.id }}" type="button" like-img="{% static "img/liked.png" %}" unlike-img="{% static "img/unliked.png" %}" style=""></button>
+          </div>
+        </div>
+        <div class="row row-12 justify-content-center" id="delete-button">
+            {% if user.is_staff %}
+               <form id="delete_form" method="POST" action="{% url 'delete_song' %}">
+                   {% csrf_token %}
+                    <input type="hidden" name="delete" value="yes">
+                    <input type="hidden" name="id" value="{{ song.id }}">
+                    <button class="btn btn-danger" type="submit">Delete Song</button>
+                </form>
+            {% endif %}
+            {% else %}
+            <div class="col-xs-12">
+               <strong>Log in to like or comment.</strong>
+            </div>
+            {% endif %}
+        </div>
+            <div class="row row-12 justify-content-center">
+                <div class="col-xs-10 col-md-6">
+                    <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">User</th>
+                            <th scope="col">Comment</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if comments %}
+                            {% for comment in comments %}
+                                <tr>
+                                    <td>{{ comment.user }}</td>
+                                    <td>{{ comment.text }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td><strong>There are no comments present!</strong></td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                    </table>
+                    {% if user.is_authenticated %}
+                     <a href="{% url 'submit_comment' song.slug %}"><button class="btn btn-success">Comment</button></a><br />
+                    {% endif %}
+                </div>
+            </div>
+    {% endif %}
+    {% endif %}
+{% endblock %}

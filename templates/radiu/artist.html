@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+{% extends 'radiu/base.html' %}
+{% load staticfiles %}
+
+<!-- Title -->
+{% block title_block %}
+    {{ artist.name }}
+{% endblock %}
+
+<!-- Page (CSS/Scripts) -->
+{% block head_block %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/song-artist.css" %}"></link>
+{% endblock %}
+
+<!-- Body -->
+{% block body_block %}
+    {% if deleted %}
+        <div id="success-message">
+        	<strong>{{ message }}</strong><br />
+        </div>
+    {% else %}
+    {% if artist %}
+        <div class="row justify-content-center">
+            <h3>{{ artist.name }}</h3>
+        </div>
+        <div class="row justify-content-center">
+            <h4>Most Liked Song: {{ most_liked_song.title }}</h4>
+        </div>
+
+        <!-- Player -->
+        <div class="row justify-content-center">
+        	<div id="player" video_id="{{video_id}}"></div>
+        </div>
+
+        {% if user.is_staff %}
+        <!-- Favourite and like buttons -->
+        <div class="row row-12 justify-content-center" id="buttons-block">
+            <form id="delete_form" method="POST" action="{% url 'delete_artist' %}">
+               {% csrf_token %}
+                <input type="hidden" name="delete" value="yes">
+                <input type="hidden" name="id" value="{{ artist.id }}">
+                <button class="btn btn-danger" type="submit">Delete Artist</button>
+            </form>
+        </div>
+        {% endif %}
+
+        <div class="row justify-content-center">
+            <div class="col-10 col-md-8">
+                <p>{{ artist.description }}</p>
+            </div>
+        </div>
+
+        {% if songs %}
+        <div class="d-flex justify-content-center">
+           <div class="col-8 col-md-4">
+                <table class="table table-bordered text-center">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Listed songs:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for song in songs %}
+                        <tr>
+                            <td><a href="{% url 'song' song.slug %}">{{ song.title }}</a></td>
+                        </tr>
+                     {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+            <strong>No listed songs!</strong><br />
+            </div>
+        {% endif %}
+    {% endif %}
+    {% endif %}
+{% endblock %}

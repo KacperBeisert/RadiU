@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+{% extends 'radiu/base.html' %}
+{% load staticfiles %}
+
+<!-- Title -->
+{% block title_block %}
+    My Profile
+{% endblock %}
+
+<!-- Page (CSS/Scripts) -->
+{% block head_block %}
+	<link rel="stylesheet" type="text/css" href="{% static "css/myprofile.css" %}"></link>
+{% endblock %}
+
+<!-- Body -->
+{% block body_block %}
+    {% if updated %}
+        <div id="success-message">
+        	<strong>{{ update_message }} <a href="{% url 'myprofile' user.username|slugify %}">Return to profile page.</a></strong><br />
+        </div>
+    {% else %}
+        {% if user.is_authenticated %}
+            <div class="row">
+                <!-- User info panel -->
+        	    <div class="col-xs-12 col-md-4">
+        		    <div id="user-info-block">
+        			    <h3>My Profile - {{ user.username }}</h3>
+        			    {% if profile.picture %}
+        			        <img id="profile-img" src="{{ MEDIA_URL}}{{ profile.picture }}">
+        			    {% else %}
+        			        <strong>No profile picture!</strong>
+        			    {% endif %}
+        			    <br>
+        			    <button id="edit-button" type="button" class="btn btn-secondary">Edit</button>
+                        <form id="user_form" method="POST" action="{% url 'update_picture' user.username|slugify %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input type="file" class="form-control" id="id_picture" name="picture"><input type="hidden" name="slug" id="id_slug">
+                            </div>
+                            <button type="submit" class="btn btn-secondary">Update</button>
+                        </form>
+        			    <hr>
+                        <div id="info-block">
+        			        {% if user.is_staff %}
+        			            <p>Rank: Staff</p>
+        			        {% else %}
+        			            <p>Rank: User</p>
+        			        {% endif %}
+        				    <p>E-mail: {{ user.email }}</p>
+        				    <p>Likes: {{ likes }}</p>
+        				    <p>Comments: {{ comments }}</p>
+       		    		    <p>Last login: {{ user.last_login }}</p>
+        		        </div>
+        		    </div>
+        	    </div>
+
+        	    <!-- Favourite song player -->
+        	    <div class="col-xs-12 col-md-8">
+            	    {% if fav_song %}
+            		    <div id="player-block">
+            			    <h3>Favourite song: {{ fav_song.title }} by {{ fav_song.artist }}</h3>
+            			    <!-- Youtube player -->
+            			    <div id="player" video_id="{{ video_id }}"></div>
+            		    </div>
+            	    {% else %}
+               	        <div id="no-favourite">
+               	    	    <h3>You have not chosen a favourite song!</h3>
+               	        </div>
+            	    {% endif %}
+        	    </div>
+            </div>
+
+            <hr class="style13">
+
+            <div class="row">
+                <!-- Recently liked songs -->
+        	    <div class="col-10 col-md">
+				    <div class="d-flex justify-content-center ">
+    				    <table class="table table-bordered p-4">
+    					    <thead class="thead-dark">
+    						    <tr>
+    							    <th scope="col">Recently liked songs:</th>
+    						    </tr>
+    					    </thead>
+    					    <tbody>
+    						    {% if liked_songs %}
+    							    {% for song in liked_songs %}
+    								    <tr>
+    									    <td><a href="{% url 'song' song.slug %}">{{ song.title }}</a> - <a href="{% url 'artist' song.artist.slug %}">{{ song.artist }}</a></td>
+    								    </tr>
+    							    {% endfor %}
+    						    {% endif %}
+    					    </tbody>
+    				    </table>
+            	    </div>
+        	    </div>
+
+        	    <!-- Most liked genres -->
+        	    <div class="col-10 col-md">
+				    <div class="d-flex justify-content-center">
+    				    <table class="table table-bordered">
+    					    <thead class="thead-dark">
+    						    <tr>
+    							    <th scope="col">Most liked genres:</th>
+    							    <th scope="col">Likes</th>
+    						    </tr>
+    					    </thead>
+    					    <tbody>
+    					        {% if liked_genres %}
+    							    {% for genre in liked_genres %}
+    								    <tr>
+    									    <td>{{ genre.0 }}</td>
+    									    <td>{{ genre.1 }}</td>
+    								    </tr>
+    							    {% endfor %}
+    						    {% endif %}
+    					    </tbody>
+    				    </table>
+                	</div>
+        	    </div>
+
+        	    {% if suggested_songs %}
+        	    <!-- Suggested songs -->
+        	    <div class="col-10 col-md">
+				    <div class="d-flex justify-content-center">
+    				    <table class="table table-bordered">
+    					    <thead class="thead-dark">
+    						    <tr>
+    							    <th scope="col">You might like:</th>
+    						    </tr>
+    					    </thead>
+    					    <tbody>
+    					        {% for suggestion in suggested_songs %}
+    				                <tr>
+                                        <td><a href="{% url 'song' suggestion.slug %}">{{ suggestion.title }}</a> - <a href="{% url 'artist' suggestion.artist.slug %}">{{ suggestion.artist }}</a></td>
+    								</tr>
+    							 {% endfor %}
+    					    </tbody>
+    				    </table>
+                	</div>
+        	    </div>
+        	    {% endif %}
+            </div>
+        <div>
+        </div>
+        {% else %}
+            <p>Not logged in!</p>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block script_block %}
+<script src="{% static "js/edit-picture.js" %}"></script>
+{% endblock %}

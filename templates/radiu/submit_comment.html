@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% extends 'radiu/base.html' %}
+{% load staticfiles %}
+
+<!-- Title -->
+{% block title_block %}
+    Submit Comment
+{% endblock %}
+
+<!-- Page (CSS/Scripts) -->
+{% block head_block %}
+	<link rel="stylesheet" type="text/css" href="{% static "css/submit_comment.css" %}"></link>
+{% endblock %}
+
+<!-- Body -->
+{% block body_block %}
+    {% if commented %}
+    <div id="success-message">
+        <strong>New comment has been submitted! <a href="{% url 'song' song.slug %}">Return to song.</a></strong></strong><br />
+    </div>
+    {% else %}
+        <div class="row justify-content-xs-center justify-content-sm-center" id="input-block">
+    		<div class="col col-xs-auto col-sm-6 col-md-6 col-lg-5 col-xl-3 ">
+    			<h3>Submit a comment!</h3>
+    			<form id="comment_form" method="post" action="{% url 'submit_comment' song.slug %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+    				    <label for="id_name">Comment:</label>
+    					<input type="text" class="form-control" id="id_text" name="text" maxlength="250" placeholder="Comment">
+    				</div>
+    				<button type="submit" class="btn btn-primary">Submit</button>
+    			</form>
+    		</div>
+	    </div>
+    {% endif %}
+{% endblock %}
